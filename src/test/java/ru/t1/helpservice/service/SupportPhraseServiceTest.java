@@ -25,7 +25,8 @@ class SupportPhraseServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        supportPhraseService = new SupportPhraseService(supportPhraseRepository);
+        supportPhraseService = new SupportPhraseService();
+        supportPhraseService.setSupportPhraseRepository(supportPhraseRepository);
     }
 
     @Test

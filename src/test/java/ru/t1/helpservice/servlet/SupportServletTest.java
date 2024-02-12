@@ -1,5 +1,8 @@
 package ru.t1.helpservice.servlet;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -8,9 +11,6 @@ import ru.t1.helpservice.entity.SupportPhrase;
 import ru.t1.helpservice.exception.BaseHelpServiceException;
 import ru.t1.helpservice.service.SupportPhraseService;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -36,8 +36,8 @@ class SupportServletTest {
     @BeforeEach
     void setUp() throws ServletException, IOException {
         MockitoAnnotations.openMocks(this);
-        supportServlet = new SupportServlet(supportPhraseService);
-        supportServlet.init();
+        supportServlet = new SupportServlet();
+        supportServlet.setSupportPhraseService(supportPhraseService);
         stringWriter = new StringWriter();
         PrintWriter writer = new PrintWriter(stringWriter);
         when(response.getWriter()).thenReturn(writer);

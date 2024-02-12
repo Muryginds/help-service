@@ -2,7 +2,7 @@ version: '3.8'
 services:
   tomcat:
     container_name: tomcat
-    image: tomcat:9.0
+    image: tomcat:10.0
     ports:
       - "8080:8080"
     volumes:

@@ -1,25 +1,21 @@
 package ru.t1.helpservice.servlet;
 
-import lombok.AllArgsConstructor;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.Setter;
 import ru.t1.helpservice.entity.SupportPhrase;
 import ru.t1.helpservice.exception.BaseHelpServiceException;
-import ru.t1.helpservice.repository.SupportPhraseRepositoryImpl;
 import ru.t1.helpservice.service.SupportPhraseService;
+import ru.t1.helpservice.utils.ApplicationContextUtils;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@AllArgsConstructor
 public class SupportServlet extends HttpServlet {
+    @Setter
     private SupportPhraseService supportPhraseService;
-
-    public SupportServlet() {
-        supportPhraseService = new SupportPhraseService(new SupportPhraseRepositoryImpl());
-    }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -52,5 +48,10 @@ public class SupportServlet extends HttpServlet {
 
     private void handleException(PrintWriter printWriter, BaseHelpServiceException ex) {
         printWriter.println("Error: " + ex.getMessage());
+    }
+
+    @Override
+    public void init() throws ServletException {
+        supportPhraseService = ApplicationContextUtils.getContext().getInstance(SupportPhraseService.class);
     }
 }

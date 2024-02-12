@@ -1,6 +1,7 @@
 package ru.t1.helpservice.service;
 
 import lombok.RequiredArgsConstructor;
+import ru.t1.helpservice.annotation.Autowired;
 import ru.t1.helpservice.entity.SupportPhrase;
 import ru.t1.helpservice.exception.SupportPhraseException;
 import ru.t1.helpservice.exception.SupportPhraseNotFoundException;
@@ -8,7 +9,12 @@ import ru.t1.helpservice.repository.SupportPhraseRepository;
 
 @RequiredArgsConstructor
 public class SupportPhraseService {
-    private  final SupportPhraseRepository supportPhraseRepository;
+    private SupportPhraseRepository supportPhraseRepository;
+
+    @Autowired
+    public void setSupportPhraseRepository(SupportPhraseRepository supportPhraseRepository) {
+        this.supportPhraseRepository = supportPhraseRepository;
+    }
 
     public void save(String newPhrase) {
         if (newPhrase == null || newPhrase.isBlank()) {
