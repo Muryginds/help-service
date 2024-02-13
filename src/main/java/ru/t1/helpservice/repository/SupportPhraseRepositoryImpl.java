@@ -15,7 +15,6 @@ public class SupportPhraseRepositoryImpl implements SupportPhraseRepository {
     @Override
     public void save(SupportPhrase supportPhrase) {
         PHRASES.put(supportPhrase.getId(), supportPhrase);
-        System.out.println(supportPhrase.getId());
     }
 
     @Override
