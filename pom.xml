@@ -12,21 +12,19 @@
     <properties>
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
+        <maven.war-plugin.version>3.4.0</maven.war-plugin.version>
+        <org.lombock.version>1.18.30</org.lombock.version>
         <org.junit.jupiter.version>5.10.2</org.junit.jupiter.version>
         <org.mockito.version>5.10.0</org.mockito.version>
         <jakarta.servlet.version>6.1.0-M1</jakarta.servlet.version>
+        <org.reflections.version>0.10.2</org.reflections.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>4.0.1</version>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.30</version>
+            <version>${org.lombock.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -51,8 +49,19 @@
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
             <version>${jakarta.servlet.version}</version>
-            <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>${org.reflections.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.16.1</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -61,7 +70,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
-                <version>3.4.0</version>
+                <version>${maven.war-plugin.version}</version>
             </plugin>
         </plugins>
     </build>
