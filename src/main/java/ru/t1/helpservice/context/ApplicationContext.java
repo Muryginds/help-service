@@ -7,6 +7,7 @@ import ru.t1.helpservice.annotation.Instance;
 import ru.t1.helpservice.exception.ApplicationContextException;
 import ru.t1.helpservice.exception.BaseHelpServiceException;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -21,24 +22,30 @@ public class ApplicationContext {
                 .map(this::getNewInstance)
                 .toList();
         for (var configuration : configurations) {
-            var methods = Arrays.stream(configuration.getClass().getMethods())
-                    .filter(method -> method.isAnnotationPresent(Instance.class))
-                    .toList();
-            for (var method : methods) {
+            var initialisingMethods = getAnnotatedMethodsFromObject(configuration, Instance.class);
+            for (var method : initialisingMethods) {
                 instances.put(method.getReturnType(), invokeMethod(method, configuration));
             }
         }
-        for (var object : instances.values()) {
-            var setters = Arrays.stream(object.getClass().getMethods())
-                    .filter(method -> method.isAnnotationPresent(Autowired.class))
-                    .toList();
+        for (var instance : instances.values()) {
+            var setters = getAnnotatedMethodsFromObject(instance, Autowired.class);
             for (var method : setters) {
-                var args = Arrays.stream(method.getParameters())
-                        .map(parameter -> instances.get(parameter.getType()))
-                        .toArray();
-                invokeMethod(method, object, args);
+                var args = prepareParametersForMethod(method);
+                invokeMethod(method, instance, args);
             }
         }
+    }
+
+    private List<Method> getAnnotatedMethodsFromObject(Object object, Class<? extends Annotation> clazz) {
+        return Arrays.stream(object.getClass().getMethods())
+                .filter(method -> method.isAnnotationPresent(clazz))
+                .toList();
+    }
+
+    private Object[] prepareParametersForMethod(Method method) {
+        return Arrays.stream(method.getParameters())
+                .map(parameter -> instances.get(parameter.getType()))
+                .toArray();
     }
 
     private Object invokeMethod(Method method, Object object) {

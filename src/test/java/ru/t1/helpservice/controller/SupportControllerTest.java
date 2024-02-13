@@ -25,14 +25,14 @@ class SupportControllerTest {
 
     @Test
     void testAddSupportPhrase() {
-        String phrase = "Test support phrase";
-        SupportPhraseRequestDTO requestDTO = new SupportPhraseRequestDTO(phrase);
+        var phrase = "Test support phrase";
+        var requestDTO = new SupportPhraseRequestDTO(phrase);
 
-        BaseResponseDTO expectedResponse = BaseResponseDTO.builder().message("New phrase saved").build();
+        var expectedResponse = BaseResponseDTO.builder().message("New phrase saved").build();
 
         doNothing().when(supportPhraseService).save(phrase);
 
-        BaseResponseDTO responseDTO = supportController.addSupportPhrase(requestDTO);
+        var responseDTO = supportController.addSupportPhrase(requestDTO);
 
         verify(supportPhraseService, times(1)).save(phrase);
         assertEquals(expectedResponse, responseDTO);
@@ -40,14 +40,14 @@ class SupportControllerTest {
 
     @Test
     void testGetSupportPhrase() {
-        String phrase = "Test support phrase";
-        long id = 1L;
+        var phrase = "Test support phrase";
+        var id = 1L;
 
-        SupportPhraseDTO expectedDTO = SupportPhraseDTO.builder().id(id).phrase(phrase).build();
+        var expectedDTO = SupportPhraseDTO.builder().id(id).phrase(phrase).build();
 
         when(supportPhraseService.getRandomPhrase()).thenReturn(SupportPhrase.builder().id(id).message(phrase).build());
 
-        SupportPhraseDTO responseDTO = supportController.getSupportPhrase();
+        var responseDTO = supportController.getSupportPhrase();
 
         verify(supportPhraseService, times(1)).getRandomPhrase();
         assertEquals(expectedDTO, responseDTO);

@@ -9,8 +9,15 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SupportPhraseRepositoryImpl implements SupportPhraseRepository {
-    private static final Map<Long, SupportPhrase> PHRASES = new ConcurrentHashMap<>();
+    private static final Map<Long, SupportPhrase> PHRASES = init();
     private static final Random random = new Random();
+
+    private static Map<Long, SupportPhrase> init() {
+        var map = new ConcurrentHashMap<Long, SupportPhrase>();
+        var supportPhrase = SupportPhrase.builder().message("Default support phrase").build();
+        map.put(supportPhrase.getId(), supportPhrase);
+        return map;
+    }
 
     @Override
     public void save(SupportPhrase supportPhrase) {
@@ -18,9 +25,8 @@ public class SupportPhraseRepositoryImpl implements SupportPhraseRepository {
     }
 
     @Override
-    public synchronized Optional<SupportPhrase> getRandomPhrase() {
-        var mapSize = PHRASES.size();
-        if (mapSize == 0) {
+    public Optional<SupportPhrase> getRandomPhrase() {
+        if (PHRASES.isEmpty()) {
             return Optional.empty();
         }
         var keyList = new ArrayList<>(PHRASES.keySet());

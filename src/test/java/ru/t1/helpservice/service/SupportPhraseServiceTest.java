@@ -31,7 +31,7 @@ class SupportPhraseServiceTest {
 
     @Test
     void testSave_InputOk_Success() {
-        String phrase = "This is a test phrase";
+        var phrase = "This is a test phrase";
 
         supportPhraseService.save(phrase);
 
@@ -40,7 +40,7 @@ class SupportPhraseServiceTest {
 
     @Test
     void testSave_EmptyPhrase_ExceptionThrown() {
-        String phrase = "";
+        var phrase = "";
 
         assertThrows(SupportPhraseException.class, () -> supportPhraseService.save(phrase));
         verifyNoInteractions(supportPhraseRepository);
@@ -56,8 +56,8 @@ class SupportPhraseServiceTest {
 
     @Test
     void testGetRandomPhrase_InputOk_Success() {
-        String message = "This is a random phrase";
-        SupportPhrase supportPhrase = SupportPhrase.builder().message(message).build();
+        var message = "This is a random phrase";
+        var supportPhrase = SupportPhrase.builder().message(message).build();
         when(supportPhraseRepository.getRandomPhrase()).thenReturn(Optional.of(supportPhrase));
 
         SupportPhrase retrievedPhrase = supportPhraseService.getRandomPhrase();
