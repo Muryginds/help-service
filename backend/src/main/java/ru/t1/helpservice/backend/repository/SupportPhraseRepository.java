@@ -10,4 +10,6 @@ public interface SupportPhraseRepository {
     void save(SupportPhrase supportPhrase);
 
     Optional<SupportPhrase> getRandomPhrase();
+
+    boolean checkExistsByName(String phrase);
 }

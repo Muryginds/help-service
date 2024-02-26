@@ -11,6 +11,8 @@ Simple web service with servlet with in-memory storage compiling war archive dep
 Self-made dispatcher servlet and application context + logging using proxy pattern
 <br><a href='https://github.com/Muryginds/help-service/pull/3'>`Spring 3`</a> -
 Spring boot + in-memory message broker implemented as external library + BeanPostProcessor configuration
+<br><a href='https://github.com/Muryginds/help-service/pull/4'>`Spring 4`</a> -
+Kafka integration with docker-compose, broker feature toggle
 
 ### Endpoints
 The service exposes the following endpoints:

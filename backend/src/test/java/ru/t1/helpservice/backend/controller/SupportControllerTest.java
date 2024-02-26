@@ -5,12 +5,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.t1.helpservice.backend.dto.BaseResponseDTO;
-import ru.t1.helpservice.backend.dto.SupportPhraseDTO;
-import ru.t1.helpservice.backend.dto.SupportPhraseRequestDTO;
+import ru.t1.helpservice.backend.dto.SupportPhraseDto;
+import ru.t1.helpservice.backend.dto.SupportPhraseRequestDto;
 import ru.t1.helpservice.backend.entity.SupportPhrase;
 import ru.t1.helpservice.backend.service.SupportPhraseService;
-import ru.t1.helpservice.broker.publisher.Publisher;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -20,8 +18,6 @@ class SupportControllerTest {
 
     @Mock
     private SupportPhraseService supportPhraseService;
-    @Mock
-    private Publisher publisher;
 
     @InjectMocks
     private SupportController supportController;
@@ -29,16 +25,13 @@ class SupportControllerTest {
     @Test
     void testAddSupportPhrase() {
         var phrase = "Test support phrase";
-        var requestDTO = new SupportPhraseRequestDTO(phrase);
+        var requestDTO = new SupportPhraseRequestDto(phrase);
 
-        var expectedResponse = BaseResponseDTO.builder().message("New phrase saved").build();
+        doNothing().when(supportPhraseService).save(requestDTO);
 
-        doNothing().when(publisher).publishMessage(phrase);
+        supportController.addSupportPhrase(requestDTO);
 
-        var responseDTO = supportController.addSupportPhrase(requestDTO);
-
-        verify(publisher, times(1)).publishMessage(phrase);
-        assertEquals(expectedResponse, responseDTO);
+        verify(supportPhraseService, times(1)).save(requestDTO);
     }
 
     @Test
@@ -47,7 +40,7 @@ class SupportControllerTest {
         var id = 1L;
 
         var supportPhrase = SupportPhrase.builder().id(id).message(phrase).build();
-        var expectedDTO = SupportPhraseDTO.builder().id(id).phrase(phrase).build();
+        var expectedDTO = SupportPhraseDto.builder().id(id).phrase(phrase).build();
 
         when(supportPhraseService.getRandomPhrase()).thenReturn(supportPhrase);
 

@@ -2,30 +2,27 @@ package ru.t1.helpservice.backend.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.t1.helpservice.backend.dto.BaseResponseDTO;
+import ru.t1.helpservice.backend.dto.BaseResponseDto;
+import ru.t1.helpservice.backend.dto.SupportPhraseDto;
+import ru.t1.helpservice.backend.dto.SupportPhraseRequestDto;
 import ru.t1.helpservice.backend.service.SupportPhraseService;
-import ru.t1.helpservice.broker.publisher.Publisher;
-import ru.t1.helpservice.backend.dto.SupportPhraseDTO;
-import ru.t1.helpservice.backend.dto.SupportPhraseRequestDTO;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/support")
 public class SupportController {
     private final SupportPhraseService supportPhraseService;
-    private final Publisher publisher;
 
     @PostMapping
-    public BaseResponseDTO addSupportPhrase(@RequestBody SupportPhraseRequestDTO request) {
-        var phrase = request.phrase();
-        publisher.publishMessage(phrase);
-        return BaseResponseDTO.builder().message("New phrase saved").build();
+    public BaseResponseDto addSupportPhrase(@RequestBody SupportPhraseRequestDto request) {
+        supportPhraseService.save(request);
+        return BaseResponseDto.builder().message("New phrase saved").build();
     }
 
     @GetMapping
-    public SupportPhraseDTO getSupportPhrase() {
+    public SupportPhraseDto getSupportPhrase() {
         var supportPhrase = supportPhraseService.getRandomPhrase();
-        return SupportPhraseDTO.builder()
+        return SupportPhraseDto.builder()
                 .id(supportPhrase.getId())
                 .phrase(supportPhrase.getMessage())
                 .build();

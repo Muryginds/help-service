@@ -3,7 +3,7 @@ package ru.t1.helpservice.backend.dto;
 import lombok.Builder;
 
 @Builder
-public record BaseResponseDTO(
+public record BaseResponseDto(
         String message
 ) {
 }
