@@ -7,12 +7,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.t1.helpservice.backend.dto.SupportPhraseRequestDTO;
+import ru.t1.helpservice.backend.dto.SupportPhraseRequestDto;
 import ru.t1.helpservice.backend.entity.SupportPhrase;
 import ru.t1.helpservice.backend.service.SupportPhraseService;
-import ru.t1.helpservice.broker.publisher.Publisher;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -25,12 +24,9 @@ class SupportControllerMvcTest {
     @MockBean
     private SupportPhraseService supportPhraseService;
 
-    @MockBean
-    private Publisher publisher;
-
     @Test
     void addSupportPhraseTest() throws Exception {
-        var requestDTO = new SupportPhraseRequestDTO("Test phrase");
+        var requestDTO = new SupportPhraseRequestDto("Test phrase");
 
         mockMvc.perform(post("/api/v1/support")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -38,7 +34,8 @@ class SupportControllerMvcTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.message").value("New phrase saved"));
 
-        verify(publisher).publishMessage("Test phrase");
+        verify(supportPhraseService, times(1)).save(requestDTO);
+        verify(supportPhraseService).save(requestDTO);
     }
 
     @Test

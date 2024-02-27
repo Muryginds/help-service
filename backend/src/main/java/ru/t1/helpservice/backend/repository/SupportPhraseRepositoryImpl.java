@@ -36,4 +36,11 @@ public class SupportPhraseRepositoryImpl implements SupportPhraseRepository {
         var id = keyList.get(indexInList);
         return Optional.of(PHRASES.get(id));
     }
+
+    @Override
+    public boolean checkExistsByName(String phrase) {
+        return PHRASES.values().stream()
+                .map(SupportPhrase::getMessage)
+                .anyMatch(m -> m.contains(phrase));
+    }
 }
