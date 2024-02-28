@@ -35,12 +35,14 @@ public class BrokerConfig {
     @Primary
     public SupportPhraseService supportPhraseService(
             SupportPhraseRepository supportPhraseRepository,
-            KafkaTemplate<String, SupportPhraseRequestDto> phraseRequestkafkaTemplate) {
-        return new KafkaSupportPhraseServiceImpl(supportPhraseRepository, phraseRequestkafkaTemplate);
+            KafkaTemplate<String, SupportPhraseRequestDto> phraseRequestkafkaTemplate,
+            KafkaProperties kafkaProperties) {
+        return new KafkaSupportPhraseServiceImpl(
+                supportPhraseRepository, phraseRequestkafkaTemplate, kafkaProperties);
     }
 
     @Bean
-    public BrokerMessageConsumer messageConsumer(SupportPhraseRepository supportPhraseRepository) {
+    public BrokerMessageConsumer brokerMessageConsumer(SupportPhraseRepository supportPhraseRepository) {
         return new BrokerMessageConsumer(supportPhraseRepository);
     }
 

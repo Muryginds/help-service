@@ -3,6 +3,7 @@ package ru.t1.helpservice.backend.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
+import ru.t1.helpservice.backend.configuration.properties.KafkaProperties;
 import ru.t1.helpservice.backend.dto.SupportPhraseRequestDto;
 import ru.t1.helpservice.backend.entity.SupportPhrase;
 import ru.t1.helpservice.backend.exception.SupportPhraseException;
@@ -13,10 +14,9 @@ import ru.t1.helpservice.backend.service.SupportPhraseService;
 @Slf4j
 @RequiredArgsConstructor
 public class KafkaSupportPhraseServiceImpl implements SupportPhraseService {
-    private static final String TOPIC_NAME = "support-phrase";
-
     private final SupportPhraseRepository supportPhraseRepository;
     private final KafkaTemplate<String, SupportPhraseRequestDto> kafkaTemplate;
+    private final KafkaProperties kafkaProperties;
 
     @Override
     public void save(SupportPhraseRequestDto supportPhraseRequestDto) {
@@ -31,7 +31,7 @@ public class KafkaSupportPhraseServiceImpl implements SupportPhraseService {
         supportPhraseRepository.save(newSupportPhrase);
         log.info("Phrase '{}' saved to repository", newPhrase);
 
-        kafkaTemplate.send(TOPIC_NAME, supportPhraseRequestDto);
+        kafkaTemplate.send(kafkaProperties.topicName(), supportPhraseRequestDto);
         log.info("Phrase '{}' sent to kafka", newPhrase);
     }
 

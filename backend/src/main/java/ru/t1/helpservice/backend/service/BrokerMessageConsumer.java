@@ -14,11 +14,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Slf4j
 public class BrokerMessageConsumer extends AbstractConsumerSeekAware {
-    private static final String TOPIC_NAME = "support-phrase";
-
     private final SupportPhraseRepository supportPhraseRepository;
 
-    @KafkaListener(topics = TOPIC_NAME)
+    @KafkaListener(topics = "${spring.kafka.topic-name}")
     public void listen(SupportPhraseRequestDto request) {
         var message = request.phrase();
         log.info("Received new message from kafka: {}", request);
