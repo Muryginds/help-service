@@ -21,9 +21,6 @@ public class KafkaSupportPhraseServiceImpl implements SupportPhraseService {
     @Override
     public void save(SupportPhraseRequestDto supportPhraseRequestDto) {
         var newPhrase = supportPhraseRequestDto.phrase();
-        if (newPhrase == null || newPhrase.isBlank()) {
-            throw new SupportPhraseException("Parameter 'phrase' must not be empty");
-        }
         if (supportPhraseRepository.checkExistsByName(newPhrase)) {
             throw new SupportPhraseException("Phrase '%s' already exist".formatted(newPhrase));
         }

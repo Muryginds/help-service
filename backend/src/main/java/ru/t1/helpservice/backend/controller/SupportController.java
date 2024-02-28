@@ -1,5 +1,6 @@
 package ru.t1.helpservice.backend.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.t1.helpservice.backend.dto.BaseResponseDto;
@@ -14,7 +15,7 @@ public class SupportController {
     private final SupportPhraseService supportPhraseService;
 
     @PostMapping
-    public BaseResponseDto addSupportPhrase(@RequestBody SupportPhraseRequestDto request) {
+    public BaseResponseDto addSupportPhrase(@Valid @RequestBody SupportPhraseRequestDto request) {
         supportPhraseService.save(request);
         return BaseResponseDto.builder().message("New phrase saved").build();
     }
